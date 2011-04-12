@@ -46,11 +46,16 @@ Ext.ux.menu.StoreMenu = function(config) {
 	Ext.ux.menu.StoreMenu.superclass.constructor.call(this,config);
 	if(!this.store){
 //at least url/proxy or data need to be given in config when initiating this component
-		this.store = new Ext.data.SimpleStore({
-			fields: ['config'],
-			url: this.url,
-			baseParams: this.baseParams /*,
-			proxy:this.proxy,
+		this.store = new Ext.data.JsonStore({
+			fields: this.fields,
+			root: this.root,
+			baseParams: this.baseParams,
+			idProperty: this.id,
+			proxy: new Ext.data.HttpProxy({
+			           url: this.url,
+				   method: ((!this.method) ? 'POST' : this.method),
+                        })
+			/*proxy:this.proxy,
 			data: this.data*/
 		});
 	}
@@ -64,8 +69,6 @@ Ext.ux.menu.StoreMenu = function(config) {
 	this.on('show', this.onMenuLoad, this);
 	this.store.on('beforeload', this.onBeforeLoad, this);	
 	this.store.on('load', this.onLoad, this);
-	
-	
 };
 								   
 Ext.extend(Ext.ux.menu.StoreMenu, Ext.menu.Menu, {
@@ -128,8 +131,7 @@ Ext.extend(Ext.ux.menu.StoreMenu, Ext.menu.Menu, {
 		//}		
 	},
 
-	onBeforeLoad: function(store){
-		this.store.baseParams = this.baseParams;
+	onBeforeLoad: function(store) {
 		this.updateMenuItems(false);
 	},
 	
@@ -149,4 +151,11 @@ Ext.extend(Ext.ux.menu.StoreMenu, Ext.menu.Menu, {
           this.autoReload = autoReload;
 	},
 
+        setBaseParam: function(param, value) {
+          this.store.setBaseParam(param, value);
+	},
+
+	setStore: function(store) {
+          this.store = store;
+	}
 });
