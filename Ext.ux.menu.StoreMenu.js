@@ -148,11 +148,11 @@ Ext.extend(Ext.ux.menu.StoreMenu, Ext.menu.Menu, {
 		this.updateMenuItems(true,records);		
 	},
 	
-        setItemsHandler: function(handler) {
-	  this.itemHandler = handler;
+    setItemsHandler: function(handler) {
+	  this.itemsHandler = handler;
 	},
 
-        setSubMenuHandler: function(handler, handlerType) {
+    setSubMenuHandler: function(handler, handlerType) {
 	  this.handlerTypes[handlerType] = handler;
 	},
 
